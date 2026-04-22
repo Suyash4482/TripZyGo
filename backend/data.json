@@ -1,0 +1,21 @@
+{
+  "users": [
+    {
+      "_id": "58uo8zuiy",
+      "name": "Pratik",
+      "email": "Pratik",
+      "password": "$2a$10$IrbVFQcEn7rzfCFox8eKqOZIHI1B64hglujsj3PlGWtMbZuzUPZda",
+      "createdAt": "2026-04-22T06:16:54.659Z"
+    },
+    {
+      "_id": "u4fqf6eom",
+      "name": "Pratik",
+      "email": "Pratik@gmail.com",
+      "password": "$2a$10$rus.Uh8RV26n3k43Gni5/uj/MOuq0jgjLZinds8UQxQ0Y4wsf7YIG",
+      "createdAt": "2026-04-22T06:54:35.708Z"
+    }
+  ],
+  "bookings": [],
+  "reviews": [],
+  "payments": []
+}

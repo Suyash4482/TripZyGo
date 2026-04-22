@@ -1,0 +1,395 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- ==================== SEO ==================== -->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TripZyGo – Explore Indian Cities</title>
+    <meta name="description"
+          content="Discover Kolhapur, Pune, Sangli, Solapur and Satara. Plan itineraries, see hidden gems, and travel like a local.">
+    <meta name="keywords"
+          content="travel, tourism, Kolhapur, Pune, Sangli, Solapur, Satara, itinerary, hidden gems, travel guide">
+    <meta property="og:title" content="TripZyGo – Explore Indian Cities"/>
+    <meta property="og:description"
+          content="Your one‑stop travel planner for Maharashtra's most beautiful cities."/>
+    <meta property="og:image" content="https://picsum.photos/1200/630"/>
+    <link rel="icon" href="data:,">
+
+    <!-- Google Font -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<!-- ====================================================== -->
+<!--  TOAST NOTIFICATION (shown/hidden by JS)               -->
+<!-- ====================================================== -->
+<div id="toast" class="toast" role="alert" aria-live="assertive"></div>
+
+<!-- ====================================================== -->
+<!--  NAVBAR                                                -->
+<!-- ====================================================== -->
+<header class="navbar">
+    <div class="nav-container">
+        <a href="#" class="logo" id="logoLink">TripZyGo</a>
+
+        <nav class="nav-links" id="navLinks">
+            <a href="#" class="nav-item active" data-page="home">Home</a>
+            <a href="#city-kolhapur" class="nav-item" data-page="city">Kolhapur</a>
+            <a href="#city-pune"     class="nav-item" data-page="city">Pune</a>
+            <a href="#city-sangli"   class="nav-item" data-page="city">Sangli</a>
+            <a href="#city-solapur"  class="nav-item" data-page="city">Solapur</a>
+            <a href="#city-satara"   class="nav-item" data-page="city">Satara</a>
+            <a href="#planner"       class="nav-item" data-page="planner">Trip Planner</a>
+        </nav>
+
+        <button class="nav-toggle" id="navToggle" aria-label="Toggle navigation">
+            <span class="hamburger"></span>
+        </button>
+
+        <!-- Auth + Lang controls -->
+        <div class="nav-actions">
+            <!-- Shown when NOT logged in -->
+            <button class="btn-auth" id="btnOpenAuth">Login / Sign Up</button>
+            <!-- Shown when logged in -->
+            <div class="user-menu hidden" id="userMenu">
+                <button class="btn-user" id="btnUserMenu">
+                    <span class="user-avatar" id="userAvatar">U</span>
+                    <span id="userName">User</span>
+                </button>
+                <div class="user-dropdown" id="userDropdown">
+                    <button id="btnMyBookings">📋 My Bookings</button>
+                    <button id="btnLogout">🚪 Logout</button>
+                </div>
+            </div>
+
+            <div class="lang-switch">
+                <button id="langEn" class="lang-btn active">EN</button>
+                <button id="langMr" class="lang-btn">मराठी</button>
+            </div>
+        </div>
+    </div>
+</header>
+
+<!-- ====================================================== -->
+<!--  MAIN                                                  -->
+<!-- ====================================================== -->
+<main id="mainContent">
+
+    <!-- =========== HOME SECTION =========== -->
+    <section id="homeSection">
+
+        <!-- HERO -->
+        <section class="hero">
+            <div class="hero-overlay"></div>
+            <div class="hero-content">
+                <h1 class="hero-title"
+                    data-en="Explore the Best of Maharashtra"
+                    data-mr="महाराष्ट्रातील सर्वोत्तम पर्यटनस्थळी अन्वेषण करा">
+                    Explore the Best of Maharashtra
+                </h1>
+                <p class="hero-subtitle"
+                   data-en="Plan, discover and travel smarter."
+                   data-mr="योजना करा, शोधा आणि स्मार्ट प्रवास करा.">
+                    Plan, discover and travel smarter.
+                </p>
+                <div class="search-bar">
+                    <input type="text" id="searchInput"
+                           placeholder="Search cities..."
+                           data-en="Search cities..."
+                           data-mr="शहरांचा शोध घ्या..."
+                           autocomplete="off">
+                    <button id="searchBtn" data-en="Search" data-mr="शोधा">Search</button>
+                </div>
+            </div>
+        </section>
+
+        <!-- FEATURED CITIES -->
+        <section class="featured-cities">
+            <h2 class="section-title" data-en="Featured Cities" data-mr="प्रमुख शहरं">Featured Cities</h2>
+            <div class="city-grid" id="cityGrid"></div>
+        </section>
+
+        <!-- HIDDEN GEMS -->
+        <section class="hidden-gems">
+            <h2 class="section-title" data-en="Hidden Gems" data-mr="गुप्त ठिकाणे">Hidden Gems</h2>
+            <div class="gems-outer">
+                <button class="gem-nav left" id="gemPrev" aria-label="Previous">&#8249;</button>
+                <div class="gems-window">
+                    <div class="gems-carousel" id="gemsCarousel"></div>
+                </div>
+                <button class="gem-nav right" id="gemNext" aria-label="Next">&#8250;</button>
+            </div>
+        </section>
+
+        <!-- TRIP PLANNER -->
+        <section class="trip-planner-widget" id="planner">
+            <h2 class="section-title" data-en="Trip Planner" data-mr="प्रवास नियोजक">Trip Planner</h2>
+            <div class="planner-form">
+                <label class="planner-label">
+                    <span data-en="Select City:" data-mr="शहर निवडा:">Select City:</span>
+                    <select id="plannerCity">
+                        <option value="kolhapur">Kolhapur</option>
+                        <option value="pune">Pune</option>
+                        <option value="sangli">Sangli</option>
+                        <option value="solapur">Solapur</option>
+                        <option value="satara">Satara</option>
+                    </select>
+                </label>
+                <label class="planner-label">
+                    <span data-en="Trip Length:" data-mr="प्रवास कालावधी:">Trip Length:</span>
+                    <select id="plannerDays">
+                        <option value="1">1 Day</option>
+                        <option value="2">2 Days</option>
+                    </select>
+                </label>
+                <button id="planBtn" data-en="Generate Itinerary" data-mr="योजना तयार करा">Generate Itinerary</button>
+            </div>
+            <div class="itinerary-output" id="itineraryOutput"></div>
+        </section>
+
+        <!-- BUDGET CALCULATOR -->
+        <section class="budget-calculator">
+            <h2 class="section-title" data-en="Budget Trip Calculator" data-mr="बजेट प्रवास कॅल्क्युलेटर">Budget Trip Calculator</h2>
+            <div class="budget-form">
+                <label class="budget-label">
+                    <span data-en="Per Day Cost (₹)" data-mr="दररोजचा खर्च (₹)">Per Day Cost (₹)</span>
+                    <input type="number" id="budgetPerDay" min="0" value="2000">
+                </label>
+                <label class="budget-label">
+                    <span data-en="Number of Days" data-mr="दिवसांची संख्या">Number of Days</span>
+                    <input type="number" id="budgetDays" min="1" value="2">
+                </label>
+                <button id="budgetCalcBtn" data-en="Calculate" data-mr="कॅल्क्युलेट करा">Calculate</button>
+            </div>
+            <p class="budget-result" id="budgetResult"></p>
+        </section>
+
+        <!-- WEATHER -->
+        <section class="weather-widget">
+            <h2 class="section-title" data-en="Current Weather" data-mr="सध्याचा हवामान">Current Weather</h2>
+            <div class="weather-cards">
+                <div class="weather-card">☀️ Kolhapur – 30°C</div>
+                <div class="weather-card">🌤️ Pune – 28°C</div>
+                <div class="weather-card">⛅ Sangli – 31°C</div>
+                <div class="weather-card">🌤️ Solapur – 33°C</div>
+                <div class="weather-card">☁️ Satara – 26°C</div>
+            </div>
+        </section>
+
+    </section><!-- /#homeSection -->
+
+    <!-- =========== CITY PAGE SECTION =========== -->
+    <section id="citySection" hidden>
+        <div class="city-page-header">
+            <button class="back-btn" id="backToHome"
+                    data-en="← Back to Home" data-mr="← घरी परत">← Back to Home</button>
+            <h1 class="city-title" id="cityTitle"></h1>
+        </div>
+
+        <nav class="city-subnav" id="citySubNav">
+            <a href="#" data-section="attractions" class="city-sublink active"
+               data-en="Top Attractions" data-mr="मुख्य आकर्षणे">Top Attractions</a>
+            <a href="#" data-section="food" class="city-sublink"
+               data-en="Food &amp; Restaurants" data-mr="अन्न व रेस्टॉरंट">Food &amp; Restaurants</a>
+            <a href="#" data-section="hotels" class="city-sublink"
+               data-en="Hotels &amp; Stay" data-mr="हॉटेल व निवास">Hotels &amp; Stay</a>
+            <a href="#" data-section="transport" class="city-sublink"
+               data-en="Transport" data-mr="वाहतूक">Transport</a>
+            <a href="#" data-section="guides" class="city-sublink"
+               data-en="Travel Guides" data-mr="प्रवास मार्गदर्शिका">Travel Guides</a>
+        </nav>
+
+        <article class="city-content" id="cityContent"></article>
+    </section><!-- /#citySection -->
+
+</main>
+
+<!-- ====================================================== -->
+<!--  FOOTER                                                -->
+<!-- ====================================================== -->
+<footer class="footer">
+    <div class="footer-inner">
+        <p class="footer-logo">TripZyGo</p>
+        <p>&copy; 2026 TripZyGo – All Rights Reserved.</p>
+        <p>Crafted with ❤️ for Maharashtra Travellers</p>
+    </div>
+</footer>
+
+<!-- ====================================================== -->
+<!--  AUTH MODAL (Login / Signup)                           -->
+<!-- ====================================================== -->
+<div class="modal-overlay hidden" id="authModal" role="dialog" aria-modal="true" aria-label="Authentication">
+    <div class="modal-box">
+        <button class="modal-close" id="closeAuthModal" aria-label="Close">&times;</button>
+
+        <!-- Tabs -->
+        <div class="modal-tabs">
+            <button class="modal-tab active" id="tabLogin">Login</button>
+            <button class="modal-tab"        id="tabSignup">Sign Up</button>
+        </div>
+
+        <!-- Login Form -->
+        <form class="auth-form" id="loginForm" novalidate>
+            <h2 class="modal-title">Welcome Back 👋</h2>
+            <p class="modal-sub">Log in to book hotels and leave reviews.</p>
+
+            <label class="form-label">
+                Email
+                <input type="email" id="loginEmail" placeholder="you@example.com" required>
+            </label>
+            <label class="form-label">
+                Password
+                <input type="password" id="loginPassword" placeholder="••••••••" required>
+            </label>
+            <p class="form-error hidden" id="loginError"></p>
+            <button type="submit" class="btn-primary" id="loginSubmit">Login</button>
+            <p class="switch-auth">
+                Don't have an account?
+                <button type="button" class="link-btn" id="switchToSignup">Sign Up</button>
+            </p>
+        </form>
+
+        <!-- Signup Form -->
+        <form class="auth-form hidden" id="signupForm" novalidate>
+            <h2 class="modal-title">Create Account 🚀</h2>
+            <p class="modal-sub">Join TripZyGo and start exploring.</p>
+
+            <label class="form-label">
+                Full Name
+                <input type="text" id="signupName" placeholder="Your name" required>
+            </label>
+            <label class="form-label">
+                Email
+                <input type="email" id="signupEmail" placeholder="you@example.com" required>
+            </label>
+            <label class="form-label">
+                Password
+                <input type="password" id="signupPassword" placeholder="Min 6 characters" required>
+            </label>
+            <p class="form-error hidden" id="signupError"></p>
+            <button type="submit" class="btn-primary" id="signupSubmit">Create Account</button>
+            <p class="switch-auth">
+                Already have an account?
+                <button type="button" class="link-btn" id="switchToLogin">Login</button>
+            </p>
+        </form>
+    </div>
+</div>
+
+<!-- ====================================================== -->
+<!--  PAYMENT MODAL                                         -->
+<!-- ====================================================== -->
+<div class="modal-overlay hidden" id="paymentModal" role="dialog" aria-modal="true" aria-label="Payment">
+    <div class="modal-box">
+        <button class="modal-close" id="closePaymentModal" aria-label="Close">&times;</button>
+        <h2 class="modal-title">💳 Complete Payment</h2>
+
+        <div class="payment-summary" id="paymentSummary">
+            <!-- Filled by JS -->
+        </div>
+
+        <form class="auth-form" id="paymentForm" novalidate>
+            <label class="form-label">
+                Payment Method
+                <select id="paymentMethod">
+                    <option value="card">💳 Credit / Debit Card</option>
+                    <option value="upi">📱 UPI</option>
+                    <option value="netbanking">🏦 Net Banking</option>
+                    <option value="wallet">👝 Wallet</option>
+                </select>
+            </label>
+
+            <!-- Card fields (shown for 'card') -->
+            <div id="cardFields">
+                <label class="form-label">
+                    Card Number
+                    <input type="text" id="cardNumber" placeholder="1234 5678 9012 3456" maxlength="19">
+                </label>
+                <div class="card-row">
+                    <label class="form-label">
+                        Expiry
+                        <input type="text" id="cardExpiry" placeholder="MM/YY" maxlength="5">
+                    </label>
+                    <label class="form-label">
+                        CVV
+                        <input type="password" id="cardCvv" placeholder="•••" maxlength="3">
+                    </label>
+                </div>
+            </div>
+
+            <!-- UPI field -->
+            <div id="upiField" class="hidden">
+                <label class="form-label">
+                    UPI ID
+                    <input type="text" id="upiId" placeholder="yourname@upi">
+                </label>
+            </div>
+
+            <p class="form-error hidden" id="paymentError"></p>
+            <button type="submit" class="btn-primary btn-pay" id="payNowBtn">
+                Pay Now
+            </button>
+            <p class="secure-note">🔒 100% Secure Payment (Demo Mode)</p>
+        </form>
+    </div>
+</div>
+
+<!-- ====================================================== -->
+<!--  MY BOOKINGS MODAL                                     -->
+<!-- ====================================================== -->
+<div class="modal-overlay hidden" id="bookingsModal" role="dialog" aria-modal="true" aria-label="My Bookings">
+    <div class="modal-box modal-wide">
+        <button class="modal-close" id="closeBookingsModal" aria-label="Close">&times;</button>
+        <h2 class="modal-title">📋 My Bookings</h2>
+        <div id="bookingsList" class="bookings-list">
+            <!-- Filled by JS -->
+        </div>
+    </div>
+</div>
+
+<!-- ====================================================== -->
+<!--  REVIEW MODAL                                          -->
+<!-- ====================================================== -->
+<div class="modal-overlay hidden" id="reviewModal" role="dialog" aria-modal="true" aria-label="Write Review">
+    <div class="modal-box">
+        <button class="modal-close" id="closeReviewModal" aria-label="Close">&times;</button>
+        <h2 class="modal-title">⭐ Write a Review</h2>
+        <p class="modal-sub" id="reviewHotelName"></p>
+
+        <form class="auth-form" id="reviewForm" novalidate>
+            <label class="form-label">
+                Rating
+                <div class="star-rating" id="starRating">
+                    <button type="button" data-val="1">★</button>
+                    <button type="button" data-val="2">★</button>
+                    <button type="button" data-val="3">★</button>
+                    <button type="button" data-val="4">★</button>
+                    <button type="button" data-val="5">★</button>
+                </div>
+                <input type="hidden" id="reviewRating" value="0">
+            </label>
+            <label class="form-label">
+                Your Review
+                <textarea id="reviewComment" rows="4"
+                          placeholder="Share your experience (min 10 characters)..."
+                          maxlength="500"></textarea>
+            </label>
+            <p class="form-error hidden" id="reviewError"></p>
+            <button type="submit" class="btn-primary" id="submitReviewBtn">Submit Review</button>
+        </form>
+
+        <!-- Existing reviews -->
+        <div class="existing-reviews" id="existingReviews">
+            <h3>Previous Reviews</h3>
+            <div id="reviewsList"></div>
+        </div>
+    </div>
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>
